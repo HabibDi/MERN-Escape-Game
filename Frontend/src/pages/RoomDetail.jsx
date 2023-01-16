@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -14,7 +14,9 @@ const RoomDetail = () => {
   const { id } = useParams();
   const [details, setDetails] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [update, setUpdate] = useState(false)
+  const [update, setUpdate] = useState();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     //console.log(id);
@@ -23,7 +25,7 @@ const RoomDetail = () => {
         const response = await axios.get(
           `http://localhost:3000/roomdetail/${id}`
         );
-        //console.log(response.data);
+        // console.log(response.data);
         setDetails(response.data);
         setIsLoading(false);
         // console.log(details);
@@ -34,13 +36,20 @@ const RoomDetail = () => {
     fetchRoomDetail();
   }, []);
 
-  const sendReservation = async () => {
+  const handleClick = async () => {
+    console.log(update);
     try {
-
+      const response = await axios.put(
+        `http://localhost:3000/reservation/${id}`,
+        update
+      );
+      if (response.data) {
+        navigate("/history");
+      }
     } catch (error) {
-
+      console.log(error.response);
     }
-  }
+  };
 
   return isLoading ? (
     <span>En cours de chargement...</span>
@@ -80,8 +89,8 @@ const RoomDetail = () => {
               color="success"
               disabled={item.morning === true && true}
               onClick={() => {
-                setUpdate(!item.morning)
-                console.log(update)
+                setUpdate({ morning: !item.morning, dayIndex: index });
+                handleClick();
               }}
             >
               MATIN
@@ -93,8 +102,8 @@ const RoomDetail = () => {
               color="success"
               disabled={item.afternoon === true && true}
               onClick={() => {
-                setUpdate(!item.morning)
-                console.log(update)
+                setUpdate(!item.morning);
+                console.log(update);
               }}
             >
               APRÈSM

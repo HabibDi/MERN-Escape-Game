@@ -80,6 +80,7 @@ const Signup = () => {
         required
         id="outlined-birthdate"
         label="date de naissance"
+        placeholder="AAAA-MM-JJ"
         value={birthdate}
         onChange={(event) => setBirthdate(event.target.value)}
       />

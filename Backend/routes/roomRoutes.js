@@ -27,19 +27,13 @@ const roomRoutes = (app) => {
   });
 
   app.put("/reservation/:id", async (req, res) => {
-    try {
-      const selectedRoom = await Room.findByIdAndUpdate(
-        req.body.id,
-        {
-          // booked[index]:
-        }
-      )
+    console.log(req.params.id);
+    console.log(req.body);
 
-
-    } catch (error) {
-
-    }
-  })
+    // try {
+    //   const selectedRoom = await Room.findByIdAndUpdate(req.params.id, {});
+    // } catch (error) {}
+  });
 };
 
 module.exports = roomRoutes;
